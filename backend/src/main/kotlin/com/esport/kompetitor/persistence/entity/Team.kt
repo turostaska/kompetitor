@@ -8,12 +8,10 @@ class Team(
     val name: String,
 
     @OneToMany(cascade = [CascadeType.REFRESH])
-    val members: Set<User> = setOf(),
+    val members: MutableSet<User> = mutableSetOf(),
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     var id: Long = 0L
-
-    //todo: css
 }

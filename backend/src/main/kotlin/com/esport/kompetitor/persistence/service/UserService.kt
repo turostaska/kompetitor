@@ -1,9 +1,9 @@
 package com.esport.kompetitor.persistence.service
 
-import com.esport.kompetitor.persistence.entity.User
-import com.esport.kompetitor.persistence.repository.UserRepository
 import com.esport.kompetitor.persistence.dto.LoginRequestDto
 import com.esport.kompetitor.persistence.dto.SignUpRequestDto
+import com.esport.kompetitor.persistence.entity.User
+import com.esport.kompetitor.persistence.repository.UserRepository
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -45,6 +45,4 @@ class UserService(
 
         return authenticate.principal as User
     }
-
-    // todo: logout
 }

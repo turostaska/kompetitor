@@ -1,11 +1,11 @@
 package com.esport.kompetitor.controller
 
-import com.esport.kompetitor.persistence.service.UserService
-import com.esport.kompetitor.persistence.service.UsernameTakenException
-import com.esport.kompetitor.security.JwtTokenService
 import com.esport.kompetitor.persistence.dto.LoginRequestDto
 import com.esport.kompetitor.persistence.dto.SignUpRequestDto
 import com.esport.kompetitor.persistence.dto.UserViewDto
+import com.esport.kompetitor.persistence.service.UserService
+import com.esport.kompetitor.persistence.service.UsernameTakenException
+import com.esport.kompetitor.security.JwtTokenService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
@@ -42,5 +42,4 @@ class AuthenticationController(
         ResponseEntity.badRequest().build()
     }
 
-    // todo: logout
 }

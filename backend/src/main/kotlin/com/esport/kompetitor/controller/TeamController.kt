@@ -1,7 +1,10 @@
 package com.esport.kompetitor.controller
 
+import com.esport.kompetitor.persistence.dto.AcceptInvitationDto
+import com.esport.kompetitor.persistence.dto.InvitationRequestDto
 import com.esport.kompetitor.persistence.dto.TeamCreationRequestDto
 import com.esport.kompetitor.persistence.dto.TeamViewDto
+import com.esport.kompetitor.persistence.service.InvitationFailedException
 import com.esport.kompetitor.persistence.service.TeamCreationFailedException
 import com.esport.kompetitor.persistence.service.TeamService
 import com.esport.kompetitor.security.JwtTokenService
@@ -19,20 +22,52 @@ class TeamController(
     fun createTeam(
         @RequestBody teamCreationDto: TeamCreationRequestDto,
         request: HttpServletRequest,
-    ): ResponseEntity<TeamViewDto> {
-        return try {
-            teamService.create(
-                name = teamCreationDto.name,
-                creatorId = jwtTokenService.getUserId(request)
-            ).let {
-                ResponseEntity.ok(it)
-            }
-        } catch (ex: TeamCreationFailedException) {
-            ResponseEntity.badRequest().build()
+    ): ResponseEntity<TeamViewDto> = try {
+        teamService.create(
+            name = teamCreationDto.name,
+            creatorId = jwtTokenService.getUserId(request)
+        ).let {
+            ResponseEntity.ok(it)
         }
+    } catch (ex: TeamCreationFailedException) {
+        ResponseEntity.badRequest().build()
     }
 
     @GetMapping("")
     fun getAll(): ResponseEntity<List<TeamViewDto>> = ResponseEntity.ok(teamService.findAll())
+
+    @GetMapping("leave")
+    fun leaveTeam(request: HttpServletRequest) =
+        teamService.leaveTeam(jwtTokenService.getUserId(request)).let { ResponseEntity.ok(null) }
+
+    @GetMapping("invitations")
+    fun getAllInvitations(request: HttpServletRequest) =
+        teamService.getInvitationsOf(jwtTokenService.getUserId(request)).let { ResponseEntity.ok(it) }
+
+    @PostMapping("invitations/send")
+    fun sendInvitation(
+        @RequestBody invitationRequest: InvitationRequestDto,
+        request: HttpServletRequest
+    ) = try {
+        teamService.sendInvitation(
+            fromId = jwtTokenService.getUserId(request),
+            toId = invitationRequest.receiverId,
+        ).let { ResponseEntity.ok(it) }
+    } catch (e: InvitationFailedException) {
+        ResponseEntity.badRequest().build()
+    }
+
+    @PostMapping("invitations/accept")
+    fun acceptInvitation(
+        @RequestBody acceptRequest: AcceptInvitationDto,
+        request: HttpServletRequest
+    ) = try {
+        teamService.acceptInvitation(
+            userId = jwtTokenService.getUserId(request),
+            invitationId = acceptRequest.invitationId,
+        ).let { ResponseEntity.ok(it) }
+    } catch (e: InvitationFailedException) {
+        ResponseEntity.badRequest().build()
+    }
 
 }
