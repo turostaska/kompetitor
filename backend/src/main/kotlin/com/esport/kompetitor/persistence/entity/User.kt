@@ -14,11 +14,7 @@ class User(
 
     @ElementCollection(fetch = FetchType.EAGER)
     private val authorities: Set<GrantedAuthority> = setOf(),
-): UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L
-
+): Competitor(), UserDetails {
     @ManyToOne
     @JoinColumn(nullable = true)
     var team: Team? = null

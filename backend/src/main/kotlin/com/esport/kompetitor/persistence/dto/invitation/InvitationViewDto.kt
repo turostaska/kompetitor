@@ -1,5 +1,7 @@
-package com.esport.kompetitor.persistence.dto
+package com.esport.kompetitor.persistence.dto.invitation
 
+import com.esport.kompetitor.persistence.dto.team.TeamViewDto
+import com.esport.kompetitor.persistence.dto.auth.UserViewDto
 import com.esport.kompetitor.persistence.entity.TeamInvitation
 
 data class InvitationViewDto(

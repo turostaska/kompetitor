@@ -1,8 +1,8 @@
 package com.esport.kompetitor.controller
 
-import com.esport.kompetitor.persistence.dto.LoginRequestDto
-import com.esport.kompetitor.persistence.dto.SignUpRequestDto
-import com.esport.kompetitor.persistence.dto.UserViewDto
+import com.esport.kompetitor.persistence.dto.auth.LoginRequestDto
+import com.esport.kompetitor.persistence.dto.auth.SignUpRequestDto
+import com.esport.kompetitor.persistence.dto.auth.UserViewDto
 import com.esport.kompetitor.persistence.service.UserService
 import com.esport.kompetitor.persistence.service.UsernameTakenException
 import com.esport.kompetitor.security.JwtTokenService

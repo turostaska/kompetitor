@@ -1,6 +1,9 @@
 package com.esport.kompetitor.persistence.entity
 
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.OneToMany
 
 @Entity
 class Team(
@@ -9,9 +12,4 @@ class Team(
 
     @OneToMany(cascade = [CascadeType.REFRESH])
     val members: MutableSet<User> = mutableSetOf(),
-) {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    var id: Long = 0L
-}
+): Competitor()

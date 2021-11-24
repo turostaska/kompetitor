@@ -1,9 +1,9 @@
 package com.esport.kompetitor.controller
 
-import com.esport.kompetitor.persistence.dto.AcceptInvitationDto
-import com.esport.kompetitor.persistence.dto.InvitationRequestDto
-import com.esport.kompetitor.persistence.dto.TeamCreationRequestDto
-import com.esport.kompetitor.persistence.dto.TeamViewDto
+import com.esport.kompetitor.persistence.dto.invitation.AcceptInvitationDto
+import com.esport.kompetitor.persistence.dto.invitation.InvitationRequestDto
+import com.esport.kompetitor.persistence.dto.team.TeamCreationRequestDto
+import com.esport.kompetitor.persistence.dto.team.TeamViewDto
 import com.esport.kompetitor.persistence.service.InvitationFailedException
 import com.esport.kompetitor.persistence.service.TeamCreationFailedException
 import com.esport.kompetitor.persistence.service.TeamService

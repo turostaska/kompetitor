@@ -1,7 +1,7 @@
 package com.esport.kompetitor.persistence.service
 
-import com.esport.kompetitor.persistence.dto.InvitationViewDto
-import com.esport.kompetitor.persistence.dto.TeamViewDto
+import com.esport.kompetitor.persistence.dto.invitation.InvitationViewDto
+import com.esport.kompetitor.persistence.dto.team.TeamViewDto
 import com.esport.kompetitor.persistence.entity.Team
 import com.esport.kompetitor.persistence.entity.TeamInvitation
 import com.esport.kompetitor.persistence.repository.InvitationRepository

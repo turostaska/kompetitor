@@ -1,4 +1,4 @@
-package com.esport.kompetitor.persistence.dto
+package com.esport.kompetitor.persistence.dto.auth
 
 import com.esport.kompetitor.persistence.entity.User
 
