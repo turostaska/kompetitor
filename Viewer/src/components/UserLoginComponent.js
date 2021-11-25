@@ -2,13 +2,6 @@ import React, {Component} from 'react';
 import NewUserService from "../services/UserService";
 
 class UserLoginComponent extends Component{
-    get Token(): string {
-        return this.#_Token;
-    }
-
-    set Token(value: string) {
-        this.#_Token = value;
-    }
     constructor() {
         super();
         this.state = {
@@ -19,29 +12,33 @@ class UserLoginComponent extends Component{
             componentTitle: "Log in",
             redirectText: "Don't have an account? Sign up here!",
             redirectButton: "Sign up!",
-            login: true
+            login: true,
+            token: ""
         }
-        this.Token = "";
     }
-    #_Token = "";
+
+    SuccessfulLogin = ()=>{
+        this.props.LoginSuccess(this.state.token);
+    }
 
     componentButton = () => {
         if (this.state.login) {
-            NewUserService.postLogin(this.state.currentUser)
-            //     .then(response => {
-            //     if (response.status === 200) {
-            //         var stringhelper = response.headers["Authorization"];
-            //         this.Token = stringhelper.toString();
-            //         alert(this.Token);
-            //     } else
-            //         this.showAlert();
-            //
-            // });
+            NewUserService.postLogin(this.state.currentUser).then(response => {
+                if(response.status === 200) {
+                    console.log(response)
+                    let helper = response.headers["authorization"];
+                    this.setState({token: helper});
+                    this.SuccessfulLogin();
+                }
+                else
+                    this.showAlert();
+            })
         }
         else {
-            NewUserService.postSignup(this.state.currentUser);
-            if (!NewUserService.succeededSignUp)
-                this.showAlert();
+            NewUserService.postSignup(this.state.currentUser).then(response => {
+                if(!response.status === 200)
+                    this.showAlert();
+            });
         }
     }
 
