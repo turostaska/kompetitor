@@ -12,10 +12,11 @@ class CompetitionList extends  Component {
     }
 
     loadCompetitions = () => {
-        var result = NewCompetitionService.getAllCompetitions(this.props.token);
+        NewCompetitionService.getAllCompetitions(this.props.token).then(result =>{
         this.setState({competitions: result.data});
+    });
     }
-    
+
     render(){
         let competitionListDisplay = this.state.competitions.map((comp) => {
             return(
