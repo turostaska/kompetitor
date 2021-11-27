@@ -13,6 +13,7 @@ class CompetitionFailureException(
 ): RuntimeException(message)
 
 private fun Competition.currentStage() = this.stages[currentStage]
+private fun Competition.previousStage() = this.stages[currentStage - 1]
 
 @Component
 class CompetitionService(
@@ -100,12 +101,21 @@ class CompetitionService(
         }
     }
 
-    fun advanceToNextStage(competitionId: Long): StageViewDto {
+    fun advanceToNextStage(competitionId: Long, refereeId: Long): StageViewDto {
+        val referee = userById(refereeId)
         val competition = competitionById(competitionId).also {
             require(it.currentStage == -1 || it.currentStage().concluded)
+            require(referee in it.referees)
             it.currentStage += 1
         }
         val currentStage = competition.currentStage()
+
+        if (competition.currentStage > 0) {
+            // get advancing competitors
+            competition.previousStage().let {
+                competition.competitors = it.advancingCompetitors().toMutableSet()
+            }
+        }
 
         if (currentStage.numCompetitorsOut >= competition.competitors.size) {
             currentStage.concluded = true
@@ -127,5 +137,16 @@ class CompetitionService(
         return competition.stages.filter { it.matches.isNotEmpty() }.map { StageResultViewDto.fromStage(it) }.toList()
     }
 
-    // todo: kideríteni, kik jutnak tovább?
+    fun uploadCss(competitionId: Long, adminId: Long, cssFile: ByteArray): ByteArray {
+        val admin = userById(adminId)
+
+        val competition = competitionById(competitionId).also {
+            require(it.admin == admin)
+            it.cssFile = cssFile
+        }
+
+        return competitionRepository.save(competition).cssFile
+    }
+
+    fun getCss(competitionId: Long): ByteArray = competitionById(competitionId).cssFile
 }

@@ -6,8 +6,6 @@ import javax.persistence.*
 
 @Entity
 class Competition(
-    // todo: name?
-
     @OneToOne
     val admin: User,
 
@@ -29,7 +27,7 @@ class Competition(
 
     @OneToMany(cascade = [CascadeType.REFRESH])
     @JoinColumn
-    val competitors: MutableSet<Competitor> = mutableSetOf()
+    var competitors: MutableSet<Competitor> = mutableSetOf()
 
     @OneToMany(cascade = [CascadeType.REFRESH])
     @JoinColumn
@@ -40,9 +38,10 @@ class Competition(
 
     var concluded = false
 
+    @Lob
+    var cssFile: ByteArray = byteArrayOf()
+
     companion object {
         enum class Type { TEAM, INDIVIDUAL }
     }
-
-    // todo: css
 }

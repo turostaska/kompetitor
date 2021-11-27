@@ -2,6 +2,7 @@ package com.esport.kompetitor.persistence.entity
 
 import javax.persistence.*
 
+@Table(name = "COMPETITION_GROUP")
 @Entity
 class Group(
     @OneToMany(cascade = [CascadeType.REFRESH])
@@ -10,7 +11,7 @@ class Group(
 
     @OneToMany(cascade = [CascadeType.REFRESH])
     @JoinColumn
-    val matches: MutableSet<Match> = mutableSetOf(),
+    val groupMatches: MutableSet<Match> = mutableSetOf(),
 
     @ElementCollection
     val scores: MutableMap<Competitor, Int> = competitors.associateWith { 0 } as MutableMap<Competitor, Int>,

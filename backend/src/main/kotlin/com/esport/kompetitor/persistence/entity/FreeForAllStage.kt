@@ -42,4 +42,12 @@ class FreeForAllStage (
 
         return listOf(points)
     }
+
+    override fun advancingCompetitors(): Set<Competitor> {
+        require(concluded) { "There can be no advancing competitors from a stage that is yet to conclude." }
+
+        val pointsDescending = pointsForEachGroup()[0].toList().sortedByDescending { it.second }
+
+        return pointsDescending.take(numCompetitorsOut).map { it.first }.toSet()
+    }
 }

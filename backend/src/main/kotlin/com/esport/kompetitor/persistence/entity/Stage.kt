@@ -35,4 +35,6 @@ abstract class Stage(
     abstract fun draw()
 
     abstract fun pointsForEachGroup(): List<Map<Competitor, Int>>
+
+    abstract fun advancingCompetitors(): Set<Competitor>
 }

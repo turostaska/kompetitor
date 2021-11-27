@@ -43,7 +43,7 @@ class PlayOffStage(
                     matches += Match(
                         stage = this,
                         competitors = mutableListOf(competitor, opponent)
-                    ).also { group.matches.add(it) }
+                    ).also { group.groupMatches.add(it) }
                 }
             }
         }
@@ -55,7 +55,7 @@ class PlayOffStage(
         for (group in groups) {
             val pointsInGroup = mutableMapOf<Competitor, Int>()
 
-            for (match in group.matches) {
+            for (match in group.groupMatches) {
                 val comp1 = match.competitors[0]
                 val comp2 = match.competitors[1]
 
@@ -77,5 +77,17 @@ class PlayOffStage(
             pointsForEachGroup += pointsInGroup
         }
         return pointsForEachGroup
+    }
+
+    override fun advancingCompetitors(): Set<Competitor> {
+        require(concluded) { "There can be no advancing competitors from a stage that is yet to conclude." }
+
+        val advancing = mutableSetOf<Competitor>()
+        pointsForEachGroup().forEach { group ->
+            advancing += group.toList().maxByOrNull { it.second }!!.first
+        }
+
+        assert(advancing.size <= numCompetitorsOut)
+        return advancing
     }
 }
