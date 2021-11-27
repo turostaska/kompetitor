@@ -1,30 +1,51 @@
 import React, {Component} from "react";
 import Nav from 'react-bootstrap/Nav';
 import {MainPageEnum} from "../enums/MainPageEnum";
+import CompetitionList from "./CompetitionList";
+import CreateCompetition from "./CreateCompetition";
+import CreateTeams from "./CreateTeams";
+import JoinScreen from "./JoinScreen";
+import InviteScreen from "./InviteScreen";
 
 class MainPageComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             token: this.props.userToken,
-            competitionMenu: "Home/Competitions",
-            screen: MainPageEnum.CompetitionList
+            screen: MainPageEnum.CompetitionList,
+            switchFunc: () => {}
         };
     }
     toCreateCompetition =  () => {
-        this.setState({screen: MainPageEnum.CreateCompetition});
+        this.setState({screen: MainPageEnum.CreateCompetition, switchFunc: this.switchScreen});
     }
     toCompetitionList =  () => {
-        this.setState({screen: MainPageEnum.CompetitionList});
+        this.setState({screen: MainPageEnum.CompetitionList, switchFunc: this.switchScreen});
     }
     toCreateTeam =  () => {
-        this.setState({screen: MainPageEnum.CreateTeam});
+        this.setState({screen: MainPageEnum.CreateTeam, switchFunc: this.switchScreen});
     }
     toJoining =  () => {
-        this.setState({screen: MainPageEnum.Joining});
+        this.setState({screen: MainPageEnum.Joining, switchFunc: this.switchScreen});
     }
     toInvites =  () => {
-        this.setState({screen: MainPageEnum.InviteScreen});
+        this.setState({screen: MainPageEnum.InviteScreen, switchFunc: this.switchScreen});
+    }
+    switchScreen = () =>{
+        // eslint-disable-next-line default-case
+        switch(this.state.screen){
+            case MainPageEnum.CompetitionList:
+                return (<CompetitionList />);
+                case MainPageEnum.CreateCompetition:
+                return (<CreateCompetition />);
+            case MainPageEnum.CreateTeam:
+                return (<CreateTeams />);
+            case MainPageEnum.Joining:
+                return (<JoinScreen />);
+            case MainPageEnum.InviteScreen:
+                return (<InviteScreen />);
+
+        }
     }
 
     render() {
@@ -33,31 +54,31 @@ class MainPageComponent extends Component {
                 <div id="header">
                     <Nav className="justify-content-center" defaultActiveKey={this.state.home}>
                         <Nav.Item>
-                            <Nav.Link href={this.toCompetitionList}>{this.state.competitionMenu}</Nav.Link>
+                            <Nav.Link onClick={this.toCompetitionList}>"Home/Competitions"</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link href={this.toCreateCompetition}>Create Competition</Nav.Link>
+                            <Nav.Link onClick={this.toCreateCompetition}>Create Competition</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                        <Nav.Link href={this.toJoining}>Joining</Nav.Link>
-                    </Nav.Item>
+                            <Nav.Link onClick={this.toCreateTeam}>Create Team</Nav.Link>
+                        </Nav.Item>
                         <Nav.Item>
-                        <Nav.Link href={this.toCreateTeam}>Create Team</Nav.Link>
-                    </Nav.Item>
+                            <Nav.Link onClick={this.toJoining}>Join Competition</Nav.Link>
+                        </Nav.Item>
                         <Nav.Item>
-                        <Nav.Link href={this.toInvites}>Invites</Nav.Link>
-                    </Nav.Item>
+                            <Nav.Link onClick={this.toInvites}>Invites</Nav.Link>
+                        </Nav.Item>
                     </Nav>
                 </div>
                 <div id="body">
-                    <button>Later</button>
+                    {this.state.switchFunc()}
                 </div>
             </div>
         );
     }
 }
 
-//TODO: Headers: -Cors a többi klienshez
+//TODO:          -Headers: -Cors a többi klienshez
 //               -versenyek eredményei/állása
 //               -verseny létrehozása
 //               -felejelentkezhető versenyek kilistázása
