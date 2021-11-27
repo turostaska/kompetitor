@@ -8,12 +8,13 @@ class CompetitionList extends  Component {
         this.state = {
             competitions: [],
         }
-        this.loadCompetitions()
+        this.loadCompetitions();
     }
 
     loadCompetitions = () => {
         NewCompetitionService.getAllCompetitions(this.props.token).then(result =>{
-        this.setState({competitions: result.data});
+        if(result.status === 200)
+            this.setState({competitions: result.data});
     });
     }
 

@@ -5,7 +5,7 @@ const COMPETITION_CREATE_REST_API_URL = "http://localhost:8080/api/competition/c
 
 class CompetitionService {
     getAllCompetitions = (token) => {
-        return axios.get(COMPETITION_REST_API_URL, {},
+        return axios.get(COMPETITION_REST_API_URL,
             { headers: { Authorization: 'Bearer '+token}}).catch(error => {
             alert(error.message);
             console.error('There was an error!', error);

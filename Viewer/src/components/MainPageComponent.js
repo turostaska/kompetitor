@@ -15,6 +15,7 @@ class MainPageComponent extends Component {
             screen: MainPageEnum.CompetitionList,
             switchFunc: () => {}
         };
+        this.state.switchFunc();
     }
     toCreateCompetition =  () => {
         this.setState({screen: MainPageEnum.CreateCompetition, switchFunc: this.switchScreen});
