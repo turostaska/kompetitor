@@ -1,14 +1,21 @@
 import React, {Component} from 'react';
 import SingleCompetition from "./singleElements/SingleCompetition";
+import NewCompetitionService from "../services/CompetitionService";
 
 class CompetitionList extends  Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             competitions: [],
         }
+        this.loadCompetitions()
     }
 
+    loadCompetitions = () => {
+        var result = NewCompetitionService.getAllCompetitions(this.props.token);
+        this.setState({competitions: result.data});
+    }
+    
     render(){
         let competitionListDisplay = this.state.competitions.map((comp) => {
             return(
@@ -30,9 +37,7 @@ class CompetitionList extends  Component {
                         <td>Referees</td>
                     </tr>
                 </thead>
-                <tbody>
                 { this.state.competitions.length === 0 ? "" : competitionListDisplay}
-                </tbody>
             </table>
         );
     }

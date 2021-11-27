@@ -35,15 +35,15 @@ class MainPageComponent extends Component {
         // eslint-disable-next-line default-case
         switch(this.state.screen){
             case MainPageEnum.CompetitionList:
-                return (<CompetitionList />);
+                return (<CompetitionList token ={this.state.token}/>);
                 case MainPageEnum.CreateCompetition:
-                return (<CreateCompetition />);
+                return (<CreateCompetition token ={this.state.token}/>);
             case MainPageEnum.CreateTeam:
-                return (<CreateTeams />);
+                return (<CreateTeams token ={this.state.token}/>);
             case MainPageEnum.Joining:
-                return (<JoinScreen />);
+                return (<JoinScreen token ={this.state.token}/>);
             case MainPageEnum.InviteScreen:
-                return (<InviteScreen />);
+                return (<InviteScreen token ={this.state.token}/>);
 
         }
     }
