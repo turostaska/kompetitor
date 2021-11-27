@@ -1,5 +1,6 @@
 package com.esport.kompetitor.persistence.entity
 
+import com.esport.kompetitor.util.cartesianProductWithSelf
 import javax.persistence.Entity
 
 @Entity
@@ -21,6 +22,42 @@ class LeagueStage (
 ) {
     init {
         require(numCompetitorsIn > numCompetitorsOut)
+    }
+
+    override fun draw() {
+        competition.competitors.cartesianProductWithSelf().forEach { (competitor, opponent) ->
+            repeat(numLegs) {
+                matches += Match(
+                    stage = this,
+                    competitors = mutableListOf(competitor, opponent)
+                )
+            }
+        }
+    }
+
+    override fun pointsForEachGroup(): List<Map<Competitor, Int>> {
+        val points = mutableMapOf<Competitor, Int>()
+
+        matches.forEach { match ->
+            val competitors = match.scores.keys.toList().onEach { points.putIfAbsent(it, 0) }
+
+            when {
+                match.scores[competitors[0]]!! > match.scores[competitors[1]]!! -> {
+                    points[competitors[0]] = points[competitors[0]]!! + pointsForWin
+                    points[competitors[1]] = points[competitors[1]]!! + pointsForLoss
+                }
+                match.scores[competitors[1]]!! > match.scores[competitors[0]]!! -> {
+                    points[competitors[0]] = points[competitors[0]]!! + pointsForLoss
+                    points[competitors[1]] = points[competitors[1]]!! + pointsForWin
+                }
+                else -> { // tie
+                    points[competitors[0]] = points[competitors[0]]!! + pointsForTie
+                    points[competitors[1]] = points[competitors[1]]!! + pointsForTie
+                }
+            }
+        }
+
+        return listOf(points)
     }
 }
 

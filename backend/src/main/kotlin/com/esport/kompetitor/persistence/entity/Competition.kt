@@ -35,7 +35,8 @@ class Competition(
     @JoinColumn
     val referees: MutableSet<User> = mutableSetOf()
 
-    var currentStage: Int = 0
+    @Range(min = -1, max = 128)
+    var currentStage: Int = -1
 
     var concluded = false
 

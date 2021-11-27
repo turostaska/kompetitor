@@ -14,6 +14,7 @@ data class StageViewDto(
     val pointsForWin: Int? = null,
     val pointsForTie: Int? = null,
     val pointsForLoss: Int? = null,
+    val groups: List<GroupViewDto>? = null,
 ) {
     companion object {
         enum class Type {
@@ -33,7 +34,7 @@ data class StageViewDto(
             pointsForLoss = pointsForLoss,
         ) }
 
-        private fun fromGroup(group: GroupStage) = group.run { StageViewDto(
+        private fun fromGroupStage(group: GroupStage) = group.run { StageViewDto(
             id = id,
             type = Type.GROUP,
             numCompetitorsIn = numCompetitorsIn,
@@ -45,6 +46,7 @@ data class StageViewDto(
             pointsForWin = pointsForWin,
             pointsForTie = pointsForTie,
             pointsForLoss = pointsForLoss,
+            groups = groups.map { GroupViewDto.fromGroup(it) },
         ) }
 
         private fun fromPlayOff(playOff: PlayOffStage) = playOff.run { StageViewDto(
@@ -55,6 +57,7 @@ data class StageViewDto(
             numCompetitorsPerMatch = numCompetitorsPerMatch,
             numLegs = numLegs,
             matches = matches.map { MatchViewDto.fromMatch(it) }.toSet(),
+            groups = groups.map { GroupViewDto.fromGroup(it) },
         ) }
 
         private fun fromFreeForAll(freeForAll: FreeForAllStage) = freeForAll.run { StageViewDto(
@@ -69,7 +72,7 @@ data class StageViewDto(
 
         fun fromStage(stage: Stage) = when(stage) {
             is LeagueStage -> fromLeague(stage)
-            is GroupStage -> fromGroup(stage)
+            is GroupStage -> fromGroupStage(stage)
             is PlayOffStage -> fromPlayOff(stage)
             is FreeForAllStage -> fromFreeForAll(stage)
             else -> throw IllegalArgumentException("Unknown type: ${stage.javaClass}")

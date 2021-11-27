@@ -19,4 +19,27 @@ class FreeForAllStage (
     init {
         require(numCompetitorsIn > numCompetitorsOut)
     }
+
+    override fun draw() {
+        repeat(numLegs) {
+            matches += Match(
+                stage = this,
+                competitors = competition.competitors.toMutableList()
+            )
+        }
+    }
+
+    override fun pointsForEachGroup(): List<Map<Competitor, Int>> {
+        val points = mutableMapOf<Competitor, Int>()
+
+        matches.forEach { match ->
+            val competitorsOrdered = competition.competitors.sortedBy { match.scores[it] }
+
+            competitorsOrdered.forEachIndexed { index, it ->
+                points.merge(it, index, Int::plus)
+            }
+        }
+
+        return listOf(points)
+    }
 }

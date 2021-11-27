@@ -60,11 +60,11 @@ class TeamService(
         userRepository.readById(userId)?.invitations?.map(InvitationViewDto::fromInvitation) ?:
         throw UsernameNotFoundException("User with id $userId does not exist.")
 
-    fun sendInvitation(fromId: Long, toId: Long): InvitationViewDto {
+    fun sendInvitation(fromId: Long, toName: String): InvitationViewDto {
         val from = userRepository.readById(fromId) ?:
             throw InvitationFailedException("Sender with id $fromId does not exist.")
-        val to = userRepository.readById(toId) ?:
-            throw InvitationFailedException("Receiver with id $toId does not exist.")
+        val to = userRepository.findByUsername(toName) ?:
+            throw InvitationFailedException("Receiver with name $toName does not exist.")
         val team = from.team ?: throw InvitationFailedException("Sender has no team.")
 
         return invitationRepository.save(TeamInvitation(user = to, team = team)).let {

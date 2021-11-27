@@ -51,7 +51,7 @@ class TeamController(
     ) = try {
         teamService.sendInvitation(
             fromId = jwtTokenService.getUserId(request),
-            toId = invitationRequest.receiverId,
+            toName = invitationRequest.receiverName,
         ).let { ResponseEntity.ok(it) }
     } catch (e: InvitationFailedException) {
         ResponseEntity.badRequest().build()

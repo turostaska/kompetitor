@@ -31,4 +31,8 @@ abstract class Stage(
     open val matches: MutableSet<Match> = mutableSetOf()
 
     open var concluded = false
+
+    abstract fun draw()
+
+    abstract fun pointsForEachGroup(): List<Map<Competitor, Int>>
 }
