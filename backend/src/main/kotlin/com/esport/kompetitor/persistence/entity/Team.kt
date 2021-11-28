@@ -7,7 +7,7 @@ import javax.persistence.OneToMany
 
 @Entity
 class Team(
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     val name: String,
 
     @OneToMany(cascade = [CascadeType.REFRESH])

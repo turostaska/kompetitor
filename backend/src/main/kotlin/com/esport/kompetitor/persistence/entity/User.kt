@@ -6,10 +6,10 @@ import javax.persistence.*
 
 @Entity
 class User(
-    @Column(nullable = false, unique = true)
+    @Column( unique = true)
     private val username: String,
 
-    @Column(nullable = false)
+    @Column()
     private val password: String,
 
     @ElementCollection(fetch = FetchType.EAGER)

@@ -8,7 +8,10 @@ class CreateTeams extends  Component {
 
     render(){
         return(
-            <p>CreateTeams</p>
+            <div>
+                <h1>Create Team</h1>
+                <div></div>
+            </div>
         )
     }
 }
