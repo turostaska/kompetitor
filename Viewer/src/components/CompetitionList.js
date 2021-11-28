@@ -8,6 +8,7 @@ class CompetitionList extends  Component {
         this.state = {
             competitions: [],
         }
+        this.loadCompetitions();
     }
 
 
@@ -50,7 +51,6 @@ class CompetitionList extends  Component {
                         <td>Referees</td>
                     </tr>
                 </thead>
-                { this.state.competitions.length === 0 ? this.loadCompetitions() : ""}
                 { this.state.competitions.length === 0 ? "" : competitionListDisplay}
             </table>
         );

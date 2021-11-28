@@ -8,20 +8,21 @@ class SingleMatch extends Component {
         this.state = {
             scores: []
         }
+        this.getScoresOut().then();
     }
-    getScoresOut = () => {
-        this.setState({scores: []});
+    getScoresOut = async() => {
         let helper1 = this.props.match.scores;
         var listHelp = [];
         for (var prop in helper1) {
             if (Object.prototype.hasOwnProperty.call(helper1, prop)) {
-                listHelp.push(this.cleanScore(prop, helper1));
+                listHelp.push(await this.cleanScore(prop, helper1));
+                console.log(this.cleanScore(prop, helper1));
             }
         }
-        this.loadScores(listHelp);
+       await this.loadScores(listHelp);
     }
 
-    cleanScore = (key, obj) => {
+    cleanScore = async(key, obj) => {
         let name = "";
         let nameHelper1 = key.split("name");
         if(nameHelper1.length > 2){
@@ -43,22 +44,22 @@ class SingleMatch extends Component {
 
     }
 
-    loadScores = (newScoreList) => {
+    loadScores = async(newScoreList) => {
         for(let i=0; i<newScoreList.length;i++) {
             if(i===0)
-                this.setState({
+               await this.setState({
                 scores: [newScoreList[i]]
             });
             else
-                this.setState( {
+                await this.setState( {
                     scores: [...this.state.scores, newScoreList[i]]
                 });
-            console.log(newScoreList[i]);
         }
     }
 
     render(){
         let SingleScoreDisplay = this.state.scores.map((s) => {
+            console.log(s);
             return (
                 <SingleScore score={s} placeholder={this.props.match} />
             );
@@ -77,8 +78,7 @@ class SingleMatch extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                        { this.state.scores.length === 0 ? this.getScoresOut() : ""}
-                        {SingleScoreDisplay}
+                        {this.state.scores.length === 0 ? "" : SingleScoreDisplay}
                         </tbody>
                     </table>
                 </td>
