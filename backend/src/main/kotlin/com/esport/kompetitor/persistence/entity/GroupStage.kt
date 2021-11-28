@@ -32,9 +32,6 @@ class GroupStage (
         require(competitorsOut % numTeamsPerGroup == 0)
     }
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    var groups: List<Group> = listOf()
-
     fun numGroups() = ceilDivide(competition.competitors.size, numTeamsPerGroup)
 
     override fun draw() {
@@ -45,14 +42,17 @@ class GroupStage (
             groups[i % numGroups] += competitor
         }
 
-        this.groups = groups.map { Group(it) }
+        //this.groups = groups.map { Group(it) }
+        this.groups.clear()
+        this.groups.addAll(groups.map { Group(it, this) })
 
         for (group in this.groups) {
             group.competitors.cartesianProductWithSelf().forEach { (competitor, opponent) ->
                 repeat(numLegs) {
                     matches += Match(
                         stage = this,
-                        competitors = mutableListOf(competitor, opponent)
+                        competitors = mutableListOf(competitor, opponent),
+                        group = group
                     ).also { group.groupMatches.add(it) }
                 }
             }

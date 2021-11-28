@@ -24,9 +24,6 @@ class PlayOffStage(
         require(numLegs % 2 == 1)
     }
 
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    var groups: List<Group> = listOf()
-
     override fun draw() {
         val numGroup: Int = ceilDivide(competition.competitors.size, 2)
         val groups = Array<MutableSet<Competitor>>(numGroup) { mutableSetOf() }
@@ -35,14 +32,17 @@ class PlayOffStage(
             groups[i % numGroup] += competitor
         }
 
-        this.groups = groups.map { Group(it) }
+    //    this.groups = groups.map { Group(it) }
+        this.groups.clear()
+        this.groups.addAll(groups.map { Group(it, this) })
 
         for (group in this.groups) {
             group.competitors.cartesianProductWithSelf().forEach { (competitor, opponent) ->
                 repeat(numLegs) {
                     matches += Match(
                         stage = this,
-                        competitors = mutableListOf(competitor, opponent)
+                        competitors = mutableListOf(competitor, opponent),
+                        group = group
                     ).also { group.groupMatches.add(it) }
                 }
             }

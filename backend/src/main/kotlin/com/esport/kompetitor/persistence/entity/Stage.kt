@@ -13,6 +13,9 @@ abstract class Stage(
     @Range(min = 2, max = 128)
     open val numCompetitorsIn: Int,
 
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    open val groups: MutableList<Group> = mutableListOf(),
+
     @Range(min = 1, max = 127)
     open val numCompetitorsOut: Int,
 

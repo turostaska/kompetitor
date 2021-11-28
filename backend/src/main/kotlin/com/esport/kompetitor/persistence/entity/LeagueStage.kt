@@ -29,7 +29,8 @@ class LeagueStage (
             repeat(numLegs) {
                 matches += Match(
                     stage = this,
-                    competitors = mutableListOf(competitor, opponent)
+                    competitors = mutableListOf(competitor, opponent),
+                        group = Group(stage=this)
                 )
             }
         }

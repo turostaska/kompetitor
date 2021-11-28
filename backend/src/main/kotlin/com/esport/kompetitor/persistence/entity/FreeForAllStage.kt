@@ -24,7 +24,8 @@ class FreeForAllStage (
         repeat(numLegs) {
             matches += Match(
                 stage = this,
-                competitors = competition.competitors.toMutableList()
+                competitors = competition.competitors.toMutableList(),
+                group = Group(stage=this)
             )
         }
     }

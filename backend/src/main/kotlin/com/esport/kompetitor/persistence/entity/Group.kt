@@ -9,9 +9,9 @@ class Group(
     @JoinTable
     val competitors: MutableSet<Competitor> = mutableSetOf(),
 
-    @OneToMany(cascade = [CascadeType.REFRESH])
+    @ManyToOne(cascade = [CascadeType.REFRESH])
     @JoinColumn
-    val groupMatches: MutableSet<Match> = mutableSetOf(),
+    val stage: Stage,
 
     @ElementCollection
     val scores: MutableMap<Competitor, Int> = competitors.associateWith { 0 } as MutableMap<Competitor, Int>,
@@ -20,4 +20,7 @@ class Group(
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L
+
+    @OneToMany(cascade = [CascadeType.REFRESH])
+    val groupMatches: MutableSet<Match> = mutableSetOf()
 }

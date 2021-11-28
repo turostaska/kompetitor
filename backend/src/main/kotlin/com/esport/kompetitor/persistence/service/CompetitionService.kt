@@ -110,7 +110,7 @@ class CompetitionService(
         }
         val currentStage = competition.currentStage()
 
-        if (competition.currentStage > 0) {
+        if (competition.currentStage > 0 && currentStage.numCompetitorsIn < competition.competitors.size) {
             // get advancing competitors
             competition.previousStage().let {
                 competition.competitors = it.advancingCompetitors().toMutableSet()
