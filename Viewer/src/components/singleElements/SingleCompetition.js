@@ -12,8 +12,12 @@ class SingleCompetition extends Component {
         }
     }
 
+    openState = () => {
+        this.setState({open: !this.state.open});
+    }
+
     render(){
-        let singleStateDsiplay = this.state.stages.map((s) => {
+        let singleStateDisplay = this.state.stages.map((s) => {
            return( <SingleStage stage={s} placeholder={this.props.competition}/>);
         });
         let singleCompetitorDisplay = this.props.competition.competitors.map((com) => {
@@ -25,6 +29,7 @@ class SingleCompetition extends Component {
         return(<tbody>
             <tr>
                 <td>{this.props.competition.id}</td>
+                <td><button onClick={this.openState}>{this.state.open === true ? "-" : "+"}</button></td>
                 <td>{this.props.competition.admin.username}</td>
                 <td>{this.props.competition.competitorLimit}</td>
                 <td>{this.props.competition.startDate}</td>
@@ -51,7 +56,7 @@ class SingleCompetition extends Component {
                     </div>
                 </td>
             </tr>
-            {this.state.open === false ? "" : singleStateDsiplay}
+            {this.state.open === false ? "" : singleStateDisplay}
             </tbody>
         )
     }

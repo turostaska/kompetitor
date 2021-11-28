@@ -10,17 +10,22 @@ class CompetitionList extends  Component {
         }
     }
 
+
+
     loadCompetitions = () => {
-        NewCompetitionService.getAllCompetitions(this.props.token).then(result =>{
-        if(result.status === 200) {
-            for (var i = 0; i < result.data.length; i++) {
-                this.setState({
-                    competitions: [...this.state.competitions, result.data[i]]
-                });
-                alert(this.state.competitions[0]);
-                alert(this.state.competitions[0].admin.username);
+        NewCompetitionService.getAllCompetitions(this.props.token).then(result => {
+            if (result.status === 200) {
+                for (var i = 0; i < result.data.length; i++) {
+                    if(i === 0)
+                        this.setState({
+                            competitions: [result.data[i]]
+                        });
+                    else
+                        this.setState({
+                            competitions: [...this.state.competitions, result.data[i]]
+                        });
+                }
             }
-        }
         });
     }
 
@@ -46,7 +51,7 @@ class CompetitionList extends  Component {
                     </tr>
                 </thead>
                 { this.state.competitions.length === 0 ? this.loadCompetitions() : ""}
-                { this.state.competitions.length === 0 ? <tbody><tr><td>Üres</td></tr></tbody> : competitionListDisplay}
+                { this.state.competitions.length === 0 ? "" : competitionListDisplay}
             </table>
         );
     }
