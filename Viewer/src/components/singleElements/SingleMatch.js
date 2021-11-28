@@ -38,16 +38,17 @@ class SingleMatch extends Component {
     render(){
         let SingleScoreDisplay = this.state.scores.map((s) => {
             return (
-                <SingleScore score={s} />
+                <SingleScore score={s} placeholder={this.props.match.id} />
             );
         });
         return(
             <tr>
-                <td>{this.props.placeholder}</td>
+                <td> </td>
                 <td>
                     <table>
                         <thead>
                             <tr>
+                                <td>Order</td>
                                 <td>Competitor</td>
                                 <td>Score</td>
                             </tr>
