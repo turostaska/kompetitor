@@ -51,6 +51,7 @@ class SecurityConfig(
             addAllowedMethod("*")
             addAllowedHeader("*")
             addExposedHeader("Authorization")
+            addAllowedOriginPattern("*")
         }
         return UrlBasedCorsConfigurationSource().apply {
             registerCorsConfiguration("/**", configuration)

@@ -43,7 +43,7 @@ class CompetitionService(
             competitorLimit = competitionView.competitorLimit,
             startDate = competitionView.startDate,
             type = competitionView.type
-        ).apply { stages.addAll(competitionView.stages.map { it.toStage(this) }) }
+        ).apply { stages.addAll(competitionView.stages!!.map { it.toStage(this) }) }
 
         return competitionRepository.save(competition).let { CompetitionViewDto.fromCompetition(it) }
     }
@@ -149,4 +149,6 @@ class CompetitionService(
     }
 
     fun getCss(competitionId: Long): ByteArray = competitionById(competitionId).cssFile
+
+    fun competitionsRefereedBy(userId: Long) = competitionRepository.findRefereedBy(userId)
 }

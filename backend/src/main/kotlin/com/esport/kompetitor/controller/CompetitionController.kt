@@ -19,7 +19,9 @@ class CompetitionController(
     private val jwtTokenService: JwtTokenService,
 ) {
     @GetMapping("")
-    fun getAll(): ResponseEntity<List<CompetitionViewDto>> = ResponseEntity.ok(competitionService.findAll())
+    fun getAll(): ResponseEntity<List<CompetitionViewDto>> {
+        return ResponseEntity.ok(competitionService.findAll())
+    }
 
     @PostMapping("create")
     fun createCompetition(
@@ -129,4 +131,10 @@ class CompetitionController(
             else -> throw e
         }
     }
+
+    @GetMapping("refereed_by")
+    fun getRefereedBy(
+        request: HttpServletRequest,
+    ) = competitionService.competitionsRefereedBy(jwtTokenService.getUserId(request)).
+        map { CompetitionViewDto.fromCompetition(it) }
 }

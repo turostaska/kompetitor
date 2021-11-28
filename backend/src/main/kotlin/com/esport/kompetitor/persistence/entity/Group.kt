@@ -5,8 +5,8 @@ import javax.persistence.*
 @Table(name = "COMPETITION_GROUP")
 @Entity
 class Group(
-    @OneToMany(cascade = [CascadeType.REFRESH])
-    @JoinColumn
+    @ManyToMany(cascade = [CascadeType.REFRESH])
+    @JoinTable
     val competitors: MutableSet<Competitor> = mutableSetOf(),
 
     @OneToMany(cascade = [CascadeType.REFRESH])

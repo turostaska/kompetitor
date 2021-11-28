@@ -25,12 +25,12 @@ class Competition(
     @Column(nullable = false)
     var id: Long = 0L
 
-    @OneToMany(cascade = [CascadeType.REFRESH])
-    @JoinColumn
+    @ManyToMany(cascade = [CascadeType.REFRESH])
+    @JoinTable
     var competitors: MutableSet<Competitor> = mutableSetOf()
 
-    @OneToMany(cascade = [CascadeType.REFRESH])
-    @JoinColumn
+    @ManyToMany(cascade = [CascadeType.REFRESH])
+    @JoinTable
     val referees: MutableSet<User> = mutableSetOf()
 
     @Range(min = -1, max = 128)

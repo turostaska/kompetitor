@@ -9,8 +9,8 @@ class Match(
     @JoinColumn
     val stage: Stage,
 
-    @OneToMany(cascade = [CascadeType.REFRESH])
-    @JoinColumn
+    @ManyToMany(cascade = [CascadeType.REFRESH])
+    @JoinTable
     val competitors: MutableList<Competitor>
 ) {
     @Id

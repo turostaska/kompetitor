@@ -2,8 +2,6 @@ package com.esport.kompetitor.persistence.dto.competition
 
 import com.esport.kompetitor.persistence.dto.auth.UserViewDto
 import com.esport.kompetitor.persistence.entity.Competition
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.KeyDeserializer
 import java.time.LocalDateTime
 
 data class CompetitionViewDto (
@@ -13,8 +11,8 @@ data class CompetitionViewDto (
     val startDate: LocalDateTime,
     val type: Competition.Companion.Type,
     val competitors: Set<CompetitorViewDto> = setOf(),
-    val referees: Set<UserViewDto> = setOf(),
-    val stages: List<StageViewDto>,
+    val referees: Set<UserViewDto>? = setOf(),
+    val stages: List<StageViewDto>? = listOf(),
 ) {
     companion object {
         fun fromCompetition(competition: Competition) = competition.run {
