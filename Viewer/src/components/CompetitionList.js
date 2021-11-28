@@ -8,14 +8,20 @@ class CompetitionList extends  Component {
         this.state = {
             competitions: [],
         }
-        this.loadCompetitions();
     }
 
     loadCompetitions = () => {
         NewCompetitionService.getAllCompetitions(this.props.token).then(result =>{
-        if(result.status === 200)
-            this.setState({competitions: result.data});
-    });
+        if(result.status === 200) {
+            for (var i = 0; i < result.data.length; i++) {
+                this.setState({
+                    competitions: [...this.state.competitions, result.data[i]]
+                });
+                alert(this.state.competitions[0]);
+                alert(this.state.competitions[0].admin.username);
+            }
+        }
+        });
     }
 
     render(){
@@ -28,7 +34,7 @@ class CompetitionList extends  Component {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <td></td>
+                        <td> </td>
                         <td>Extend</td>
                         <td>Admin</td>
                         <td>Participant limit</td>
@@ -39,7 +45,8 @@ class CompetitionList extends  Component {
                         <td>Referees</td>
                     </tr>
                 </thead>
-                { this.state.competitions.length === 0 ? "" : competitionListDisplay}
+                { this.state.competitions.length === 0 ? this.loadCompetitions() : ""}
+                { this.state.competitions.length === 0 ? <tbody><tr><td>Üres</td></tr></tbody> : competitionListDisplay}
             </table>
         );
     }

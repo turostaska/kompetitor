@@ -25,7 +25,7 @@ class SingleCompetition extends Component {
         return(<tbody>
             <tr>
                 <td>{this.props.competition.id}</td>
-                <td>{this.props.competition.admin}</td>
+                <td>{this.props.competition.admin.username}</td>
                 <td>{this.props.competition.competitorLimit}</td>
                 <td>{this.props.competition.startDate}</td>
                 <td>{this.props.competition.type}</td>

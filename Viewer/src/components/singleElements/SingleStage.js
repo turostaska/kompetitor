@@ -24,7 +24,7 @@ class SingleStage extends Component {
         return(
             <tr>
                 <td>{this.props.competition.id}</td>
-                <td>{this.props.competition.admin}</td>
+                <td>{this.props.competition.admin.username}</td>
                 <td>{this.props.competition.competitorLimit}</td>
                 <td>{this.props.competition.startDate}</td>
                 <td>{this.props.competition.type}</td>
@@ -37,7 +37,7 @@ class SingleStage extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                        {this.state.matches.length === 0 ? <tr> <td>No matches to show</td></tr> : singleMatchDisplay}
+                       {/* {this.state.matches.length === 0 ? <tr> <td>No matches to show</td></tr> : singleMatchDisplay}*/}
                         </tbody>
                     </table>
                 </td>

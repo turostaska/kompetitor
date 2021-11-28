@@ -15,7 +15,6 @@ class MainPageComponent extends Component {
             screen: MainPageEnum.CompetitionList,
             switchFunc: () => {}
         };
-        this.state.switchFunc();
     }
     toCreateCompetition =  () => {
         this.setState({screen: MainPageEnum.CreateCompetition, switchFunc: this.switchScreen});
@@ -35,9 +34,8 @@ class MainPageComponent extends Component {
     switchScreen = () =>{
         // eslint-disable-next-line default-case
         switch(this.state.screen){
-            case MainPageEnum.CompetitionList:
-                return (<CompetitionList token ={this.state.token}/>);
-                case MainPageEnum.CreateCompetition:
+
+            case MainPageEnum.CreateCompetition:
                 return (<CreateCompetition token ={this.state.token}/>);
             case MainPageEnum.CreateTeam:
                 return (<CreateTeams token ={this.state.token}/>);
@@ -72,6 +70,7 @@ class MainPageComponent extends Component {
                     </Nav>
                 </div>
                 <div id="body">
+                    {this.state.screen === MainPageEnum.CompetitionList ? <CompetitionList token ={this.state.token}/> : ""}
                     {this.state.switchFunc()}
                 </div>
             </div>
