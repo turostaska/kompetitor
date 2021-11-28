@@ -8,7 +8,7 @@ class SingleStage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            matches: props.stage.matches
+            matches: this.props.stage.matches
         }
     }
     render(){
@@ -19,7 +19,7 @@ class SingleStage extends Component {
             return( <SingleReferee referee={ref}/> );
         });
         let singleMatchDisplay = this.state.matches.map((m) => {
-            return ( <SingleMatch match={m} /> );
+            return ( <SingleMatch match={m} placeholder={this.props.stage.id}/> );
         })
         return(
             <tr>
@@ -43,24 +43,16 @@ class SingleStage extends Component {
                     </table>
                 </td>
                 <td>
-                    <div className="dropdown">
-                        <button className="dropdown-toggle" type="button"
-                                data-toggle="dropdown">Competitors
-                            <span className="caret"/></button>
-                        <ul className="dropdown-menu">
-                            {this.props.placeholder.competitors.length === 0 ? <li>"No competitors"</li> : singleCompetitorDisplay}
-                        </ul>
-                    </div>
+                    <select value="Competitors">
+                        <option>Competitors</option>
+                        {this.props.placeholder.competitors.length === 0 ? <option>"No competitors"</option> : singleCompetitorDisplay}
+                    </select>
                 </td>
                 <td>
-                    <div className="dropdown">
-                        <button className="dropdown-toggle" type="button"
-                                data-toggle="dropdown">Referees
-                            <span className="caret"/></button>
-                        <ul className="dropdown-menu">
-                            {singleRefereeDisplay}
-                        </ul>
-                    </div>
+                    <select value="Referees">
+                        <option>Referees</option>
+                        {this.props.placeholder.referees.length === 0 ? <option>"No referees"</option> : singleRefereeDisplay}
+                    </select>
                 </td>
             </tr>
 

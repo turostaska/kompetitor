@@ -43,7 +43,7 @@ class SingleMatch extends Component {
         });
         return(
             <tr>
-                <td> </td>
+                <td>{this.props.placeholder}. stage</td>
                 <td>
                     <table>
                         <thead>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import SingleStage from "./SingleStage";
 import SingleCompetitor from "./functionComponents/SingleCompetitor";
 import SingleReferee from "./functionComponents/SingleReferee";
+import {Dropdown, DropdownButton} from "react-bootstrap";
 
 class SingleCompetition extends Component {
     constructor(props) {
@@ -21,7 +22,9 @@ class SingleCompetition extends Component {
            return( <SingleStage stage={s} placeholder={this.props.competition}/>);
         });
         let singleCompetitorDisplay = this.props.competition.competitors.map((com) => {
-              return( <SingleCompetitor competitor={com} />);
+              return(
+                  <SingleCompetitor competitor={com} />
+              );
         });
         let singleRefereeDisplay = this.props.competition.referees.map((ref) => {
             return( <SingleReferee referee={ref}/> );
@@ -36,24 +39,16 @@ class SingleCompetition extends Component {
                 <td>{this.props.competition.type}</td>
                 <td>{this.state.length === 0 ? "No stages to show" : "Click the Expand button to see every stage and its matches"}</td>
                 <td>
-                    <div className="dropdown">
-                        <button className="dropdown-toggle" type="button"
-                                data-toggle="dropdown">Competitors
-                            <span className="caret"/></button>
-                        <ul className="dropdown-menu">
-                            {this.props.competition.competitors.length === 0 ? <li>"No competitors"</li> : singleCompetitorDisplay}
-                        </ul>
-                    </div>
+                    <select value="Competitors">
+                        <option>Competitors</option>
+                        {this.props.competition.competitors.length === 0 ? <option>"No competitors"</option> : singleCompetitorDisplay}
+                    </select>
                 </td>
                 <td>
-                    <div className="dropdown">
-                        <button className="dropdown-toggle" type="button"
-                                data-toggle="dropdown">Referees
-                            <span className="caret"/></button>
-                        <ul className="dropdown-menu">
-                            {singleRefereeDisplay}
-                        </ul>
-                    </div>
+                    <select value="Referees">
+                        <option>Referees</option>
+                        {this.props.competition.referees.length === 0 ? <option>"No referees"</option> : singleRefereeDisplay}
+                    </select>
                 </td>
             </tr>
             {this.state.open === false ? "" : singleStateDisplay}
