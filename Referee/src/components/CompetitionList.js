@@ -44,9 +44,6 @@ class CompetitionList extends Component {
                         <td>Participant limit</td>
                         <td>Start Date</td>
                         <td>Type</td>
-                        <td>Stages</td>
-                        <td>Competitors</td>
-                        <td>Referees</td>
                     </tr>
                 </thead>
                 { this.state.competitions.length === 0 ? this.state.competitions : ""}

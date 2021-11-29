@@ -38,27 +38,7 @@ class SingleCompetition extends Component {
                 <td>{this.props.competition.competitorLimit}</td>
                 <td>{this.props.competition.startDate}</td>
                 <td>{this.props.competition.type}</td>
-                <td>{this.state.length === 0 ? "No stages to show" : "Click the Expand button to see every stage and its matches"}</td>
-                <td>
-                    <div className="dropdown">
-                        <button className="dropdown-toggle" type="button"
-                                data-toggle="dropdown">Competitors
-                            <span className="caret"/></button>
-                        <ul className="dropdown-menu">
-                            {this.props.competition.competitors.length === 0 ? <li>"No competitors"</li> : singleCompetitorDisplay}
-                        </ul>
-                    </div>
-                </td>
-                <td>
-                    <div className="dropdown">
-                        <button className="dropdown-toggle" type="button"
-                                data-toggle="dropdown">Referees
-                            <span className="caret"/></button>
-                        <ul className="dropdown-menu">
-                            {singleRefereeDisplay}
-                        </ul>
-                    </div>
-                </td>
+
             </tr>
             {/*{this.state.open === false ? "" : singleStateDisplay}*/}
             </tbody>
