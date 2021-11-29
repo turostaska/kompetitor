@@ -43,8 +43,8 @@ class CreateCompetition extends  Component {
     stageAdding = async() => {
         this.setState({stageInProgress: true});
     }
-    addStage = (stage) => {
-
+    addStage = async(stage) => {
+        await this.setState({stages: [...this.state.stages, stage], stageInProgress: false, stageAdded:true})
 }
     onAddReferee = async() => {
         await this.setState({referees: [...this.state.referees, this.state.currentReferee]});

@@ -12,7 +12,10 @@ class StagePlayOff extends Component {
     }
 
     onCreateStage = () => {
-        let stage = new StageViewDTO("PLAYOFF", this.state.competitorsIn, this.state.competitorsOut, null, this.state.numOfLegs);
+        if(this.state.competitorsIn > 1 && this.state.competitorsOut >0 && this.state.numOfLegs >0) {
+            let stage = new StageViewDTO("PLAYOFF", this.state.competitorsIn, this.state.competitorsOut, null, this.state.numOfLegs);
+            this.props.add(stage);
+        }
     }
 
     render() {
