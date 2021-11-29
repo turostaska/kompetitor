@@ -66,7 +66,8 @@ class SingleMatch extends Component {
         });
         return(
             <tr>
-                <td>{this.props.placeholder}. stage</td>
+                <td>{this.props.placeholder.id}. stage</td>
+                <td>{this.props.placeholder.type}</td>
                 <td>
                     <table className="table table-striped">
                         <thead>

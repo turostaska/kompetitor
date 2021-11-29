@@ -19,7 +19,7 @@ class SingleStage extends Component {
             return( <SingleReferee referee={ref}/> );
         });
         let singleMatchDisplay = this.state.matches.map((m) => {
-            return ( <SingleMatch match={m} placeholder={this.props.stage.id}/> );
+            return ( <SingleMatch match={m} placeholder={this.props.stage}/> );
         })
         return(
             <tr>
@@ -34,6 +34,7 @@ class SingleStage extends Component {
                         <thead>
                             <tr>
                                 <td>Order</td>
+                                <td>Type</td>
                                 <td>Matches</td>
                             </tr>
                         </thead>
