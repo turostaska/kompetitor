@@ -54,7 +54,7 @@ class CreateCompetition extends  Component {
         this.setState({stageType: "LEAGUE"})
     }
     onAddReferee = async() => {
-        await this.setState({referees: [...this.state.referees, this.state.currentReferee]});
+        await this.setState({referees: [...this.state.referees, {username: this.state.currentReferee, password: 123}]});
     }
 
     creatable = () => {
@@ -74,10 +74,9 @@ class CreateCompetition extends  Component {
             let competition = new CompetitionDTO(this.state.competitorLimit, date, this.state.type, this.state.stages);
             NewCompetitionService.postNewCompetitions(this.props.token, competition).then( async(result) => {
                 if(result.status === 200){
-                    alert("reached this");
                     let id = result.data.id;
                     for(let i=0; i<this.state.referees.length; i++){
-                        await NewCompetitionService.postNewReferee(this.props.token, id, this.state.referees[i]);
+                        await NewCompetitionService.postNewReferee(this.props.token, id, this.state.referees[i].username);
                     }
                     await this.setState({competitorLimit: 0, startDate: Date.now(), type: "",
                         stages: [], stageAdded: false, stageInProgress: false, referees: [],
