@@ -2,13 +2,18 @@ import React, {Component} from 'react';
 import SingleCompetition from "./singleElements/SingleCompetition";
 import StagePlayOff from "./singleElements/StagePlayOff";
 import SingleReferee from "./singleElements/functionComponents/SingleReferee";
+import SingleStageFunction from "./singleElements/functionComponents/SingleStageFunction";
+import StageGroup from "./singleElements/StageGroup";
+import CompetitorViewDTO from "../DTOs/CompetitorViewDTO";
+import CompetitionDTO from "../DTOs/CompetitionDTO";
+import NewCompetitionService from "../services/CompetitionService";
 
 class CreateCompetition extends  Component {
     constructor() {
         super();
         this.state = {
             competitorLimit: 0,
-            startDate: Date.now(),
+            startDate: new Date().toISOString(),
             type: "",
             stages: [],
             stageAdded: false,
@@ -16,7 +21,8 @@ class CreateCompetition extends  Component {
             referees: [],
             addStage: this.addStage,
             currentReferee: "",
-            stageType: "PLAYOFF"
+            stageType: "PLAY_OFF",
+            competitionAdded: false
         }
     }
 
@@ -35,23 +41,6 @@ class CreateCompetition extends  Component {
     typeTeam = e => {
         this.setState({type: "TEAM"})
     }
-    creatable = () => {
-        return this.state.stageAdded === true && this.state.referees.length > 0 &&
-            (this.state.type === "INDIVIDUAL" || this.state.type === "GROUP") &&
-            this.state.competitorLimit >= 2;
-    }
-    stageAdding = async() => {
-        this.setState({stageInProgress: true});
-    }
-    addStage = async(stage) => {
-        await this.setState({stages: [...this.state.stages, stage], stageInProgress: false, stageAdded:true})
-}
-    onAddReferee = async() => {
-        await this.setState({referees: [...this.state.referees, this.state.currentReferee]});
-    }
-    onCreateCompetition = () =>{
-        if(this.creatable());
-}
     typePlayoff = () => {
         this.setState({stageType: "PLAY_OFF"})
     }
@@ -64,25 +53,91 @@ class CreateCompetition extends  Component {
     typeLeague = () => {
         this.setState({stageType: "LEAGUE"})
     }
+    onAddReferee = async() => {
+        await this.setState({referees: [...this.state.referees, this.state.currentReferee]});
+    }
+
+    creatable = () => {
+        return this.state.stageAdded === true && this.state.referees.length > 0 &&
+            (this.state.type === "INDIVIDUAL" || this.state.type === "GROUP") &&
+            this.state.competitorLimit >= 2;
+    }
+    stageAdding = async() => {
+        this.setState({stageInProgress: true});
+    }
+    addStage = async(stage) => {
+        await this.setState({stages: [...this.state.stages, stage], stageInProgress: false, stageAdded:true});
+}
+    onCreateCompetition = async() =>{
+        if(this.creatable()){
+            let date= this.state.startDate+":00.00Z";
+            let competition = new CompetitionDTO(this.state.competitorLimit, date, this.state.type, this.state.stages);
+            NewCompetitionService.postNewCompetitions(this.props.token, competition).then( async(result) => {
+                if(result.status === 200){
+                    alert("reached this");
+                    let id = result.data.id;
+                    for(let i=0; i<this.state.referees.length; i++){
+                        await NewCompetitionService.postNewReferee(this.props.token, id, this.state.referees[i]);
+                    }
+                    await this.setState({competitorLimit: 0, startDate: Date.now(), type: "",
+                        stages: [], stageAdded: false, stageInProgress: false, referees: [],
+                        addStage: this.addStage, currentReferee: "", stageType: "PLAY_OFF", competitionAdded: true})
+                }
+                else
+                    alert("not successful creation");
+            })
+        }
+}
+
 
     render(){
         let stageAddDisplay = () => {
-            return(
-                <StagePlayOff add={this.state.addStage} />
-            );
+            switch (this.state.stageType)
+            {
+                case "PLAY_OFF":
+                    return(
+                        <StagePlayOff add={this.state.addStage} />
+                    );
+                case "GROUP":
+                    return(
+                        <StageGroup add={this.state.addStage} />
+                    );
+            }
+
         };
+        let stageListDisplay = this.state.stages.map((s) => {
+            return (<table className="table table-striped">
+                <thead>
+                <tr>
+                    <td>CompetitorsIn</td>
+                    <td>CompetitorsOut</td>
+                    <td>Number of legs</td>
+                    <td>Competitor number per match</td>
+                    <td>Competitor number per group</td>
+                    <td>Points for win</td>
+                    <td>Points for tie</td>
+                    <td>Points for loss</td>
+                </tr>
+                </thead>
+                <tbody>
+                <SingleStageFunction stage={s}/>
+                </tbody>
+            </table>);
+        })
         let singleRefereeDisplay = this.state.referees.map((ref) => {
             return( <SingleReferee referee={ref}/> );
         });
         return(
             <div>
             <h1>Create a Competition</h1>
+                {this.state.competitionAdded===false ? "" : <h2>Competition added, add another?</h2> }
                 <div>
                     <label id='competititor_limit'>Player limit: </label>
                     <input type='number' id="competitorLimit" min="2" value={this.state.competitorLimit} onChange={this.onCompetitorLimitChange}/>
                     <br/>
                     <label id='start_date'>Starting Date: </label>
-                    <input type="date" id="start" name="trip-start" value={"2021-12-01"} min="1970-01-01" max="2099-12-31" onChange={this.onDateChange}/>
+                    <input type="datetime-local" id="meeting-time" name="meeting-time"
+                           value={this.state.startDate} min="1970-01-01T00:01" max="2100-06-14T00:00" onChange={this.onDateChange}/>
                     <br/>
                     <label id='competition_type'>Type: </label>
                     <input type="radio" id="individual" name="competition_type" onClick={this.typeIndividual}/>
@@ -93,6 +148,7 @@ class CreateCompetition extends  Component {
                     <br/>
                     <div>
                     <label>Stages: </label>
+                        <br/>
                         <label id='stage_type'>Stage type: </label>
                         <br/>
                         <input type="radio" id="Play off" name="stage_type" onClick={this.typePlayoff}/>
@@ -107,9 +163,11 @@ class CreateCompetition extends  Component {
                         <input type="radio" id="league" name="stage_type" onClick={this.typeLeague}/>
                         <label htmlFor="team">League stage</label>
                         <br/>
-                    <button disabled={!this.state.stageInProgress} onClick={this.stageAdding}>Add Stage</button>
+                    <button disabled={this.state.stageInProgress} onClick={this.stageAdding}>Add Stage</button>
                     {this.state.stageInProgress === false ? "" : stageAddDisplay()}
+                    {this.state.stages.length === 0 ? "" : stageListDisplay}
                     </div>
+
                     <div>
                     <label>Add referees by their username: </label>
                     <input type="text" id="username" value={this.state.currentReferee} onChange={this.onRefereeChange}/>

@@ -1,15 +1,11 @@
 import React from 'react';
 
 class CompetitionDTO {
-    constructor(id, admin, competitorLimit, startDate, type, stages, competitors, referees) {
-        this.id = id;
-        this.admin = admin;
+    constructor(competitorLimit, startDate, type, stages) {
         this.competitorLimit = competitorLimit;
         this.startDate = new Date(startDate);
         this.type= type;
         this.stages = stages;
-        this.competitors = competitors;
-        this.referees = referees;
     }
 
     /* val id: Long? = null,
@@ -21,3 +17,4 @@ class CompetitionDTO {
      val referees: Set<UserViewDto> = setOf(),
      val stages: List<StageViewDto>,*/
 }
+export default CompetitionDTO

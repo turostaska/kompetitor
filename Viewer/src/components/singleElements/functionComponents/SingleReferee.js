@@ -2,7 +2,7 @@ import React from 'react';
 
 const SingleReferee = props => {
     return(
-        <option> {props.referee.username} </option>
+        <option> {props.referee} </option>
     );
 }
 export default SingleReferee
