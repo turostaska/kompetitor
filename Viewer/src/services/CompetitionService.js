@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const COMPETITION_REST_API_URL = "http://localhost:8080/api/competition";
 const COMPETITION_CREATE_REST_API_URL = "http://localhost:8080/api/competition/create";
+const COMPETITION_ADD_REFEREE_REST_API_URL = "http://localhost:8080/api/competition/add_referee";
 
 class CompetitionService {
     getAllCompetitions = (token) => {
