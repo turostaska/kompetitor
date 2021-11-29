@@ -13,6 +13,7 @@ data class CompetitionViewDto (
     val competitors: Set<CompetitorViewDto> = setOf(),
     val referees: Set<UserViewDto>? = setOf(),
     val stages: List<StageViewDto>? = listOf(),
+    val currentStage: Int,
 ) {
     companion object {
         fun fromCompetition(competition: Competition) = competition.run {
@@ -25,6 +26,7 @@ data class CompetitionViewDto (
                 competitors.map { CompetitorViewDto.fromCompetitor(it) }.toSet(),
                 referees.map { UserViewDto.fromUser(it) }.toSet(),
                 stages.map { StageViewDto.fromStage(it) },
+                currentStage
             )
         }
     }

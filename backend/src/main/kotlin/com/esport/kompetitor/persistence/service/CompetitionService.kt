@@ -9,40 +9,40 @@ import com.esport.kompetitor.persistence.repository.UserRepository
 import org.springframework.stereotype.Component
 
 class CompetitionFailureException(
-        message: String,
-) : RuntimeException(message)
+    message: String,
+): RuntimeException(message)
 
 private fun Competition.currentStage() = this.stages[currentStage]
 private fun Competition.previousStage() = this.stages[currentStage - 1]
 
 @Component
 class CompetitionService(
-        private val competitionRepository: CompetitionRepository,
-        private val matchRepository: MatchRepository,
-        private val userRepository: UserRepository,
+    private val competitionRepository: CompetitionRepository,
+    private val matchRepository: MatchRepository,
+    private val userRepository: UserRepository,
 ) {
-    private fun userById(id: Long) = userRepository.readById(id)
-            ?: throw CompetitionFailureException("User with id $id does not exist.")
+    private fun userById(id: Long) = userRepository.readById(id) ?:
+        throw CompetitionFailureException("User with id $id does not exist.")
 
-    private fun userByName(name: String) = userRepository.findByUsername(name)
-            ?: throw CompetitionFailureException("User with name $name does not exist.")
+    private fun userByName(name: String) = userRepository.findByUsername(name) ?:
+        throw CompetitionFailureException("User with name $name does not exist.")
 
-    private fun competitionById(id: Long) = competitionRepository.readById(id)
-            ?: throw CompetitionFailureException("Competition with id $id does not exist.")
+    fun competitionById(id: Long) = competitionRepository.readById(id) ?:
+        throw CompetitionFailureException("Competition with id $id does not exist.")
 
-    private fun matchById(id: Long) = matchRepository.readById(id)
-            ?: throw CompetitionFailureException("Match with id $id does not exist.")
+    private fun matchById(id: Long) = matchRepository.readById(id) ?:
+        throw CompetitionFailureException("Match with id $id does not exist.")
 
     fun findAll(): List<CompetitionViewDto> =
-            competitionRepository.findAll().map { CompetitionViewDto.fromCompetition(it) }
+        competitionRepository.findAll().map { CompetitionViewDto.fromCompetition(it) }
 
     fun create(adminId: Long, competitionView: CompetitionViewDto): CompetitionViewDto {
         val admin = userById(adminId)
 
         val competition = Competition(admin = admin,
-                competitorLimit = competitionView.competitorLimit,
-                startDate = competitionView.startDate,
-                type = competitionView.type
+            competitorLimit = competitionView.competitorLimit,
+            startDate = competitionView.startDate,
+            type = competitionView.type
         ).apply { stages.addAll(competitionView.stages!!.map { it.toStage(this) }) }
 
         return competitionRepository.save(competition).let { CompetitionViewDto.fromCompetition(it) }
@@ -101,13 +101,13 @@ class CompetitionService(
         }
     }
 
-
     fun advanceToNextStage(competitionId: Long, refereeId: Long): StageViewDto {
         val referee = userById(refereeId)
         val competition = competitionById(competitionId).also {
             require(it.currentStage == -1 || it.currentStage().concluded)
             require(referee in it.referees)
             it.currentStage += 1
+            require(it.currentStage < it.stages.size)
         }
         val currentStage = competition.currentStage()
 
@@ -129,7 +129,7 @@ class CompetitionService(
     }
 
     fun currentStageIsConcluded(competitionId: Long) = competitionById(competitionId).let {
-        it.stages[it.currentStage].concluded
+        it.currentStage < 0 || (it.currentStage < it.stages.size-1 && it.stages[it.currentStage].concluded)
     }
 
     fun getResults(competitionId: Long): List<StageResultViewDto> {

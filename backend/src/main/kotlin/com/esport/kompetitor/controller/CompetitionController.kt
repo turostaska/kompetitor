@@ -23,6 +23,15 @@ class CompetitionController(
         return ResponseEntity.ok(competitionService.findAll())
     }
 
+    @GetMapping("{competitionId}")
+    fun getById(@PathVariable competitionId: Long,): ResponseEntity<CompetitionViewDto> = try {
+        ResponseEntity.ok(competitionService.competitionById(competitionId).let {
+            CompetitionViewDto.fromCompetition(it)
+        })
+    } catch (e: CompetitionFailureException) {
+        ResponseEntity.badRequest().build()
+    }
+
     @PostMapping("create")
     fun createCompetition(
         @RequestBody competitionViewDto: CompetitionViewDto,
