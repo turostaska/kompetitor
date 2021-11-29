@@ -4,6 +4,8 @@ import StageViewDTO from "../DTOs/StageViewDTO";
 const COMPETITION_REST_API_URL = "http://localhost:8080/api/competition";
 const COMPETITION_CREATE_REST_API_URL = "http://localhost:8080/api/competition/create";
 const COMPETITION_ADD_REFEREE_REST_API_URL = "http://localhost:8080/api/competition/add_referee";
+const COMPETITION_JOIN_REST_API_URL1 = "http://localhost:8080/api/competition/";
+const COMPETITION_JOIN_REST_API_URL2 = "/join";
 
 
 class CompetitionService {
@@ -20,6 +22,14 @@ class CompetitionService {
                 refereeName: referee,
                 competitionId: Number(competitionId)
             },
+            { headers: { Authorization: 'Bearer '+token}}).catch(error => {
+            alert(error.message);
+            console.error('There was an error!', error);
+        });
+    }
+
+    getJoin = (token, competitionId) => {
+        return axios.get(COMPETITION_JOIN_REST_API_URL1+competitionId+COMPETITION_JOIN_REST_API_URL2,
             { headers: { Authorization: 'Bearer '+token}}).catch(error => {
             alert(error.message);
             console.error('There was an error!', error);
