@@ -29,7 +29,6 @@ class GroupStage (
 ) {
     init {
         require(numCompetitorsIn > numCompetitorsOut)
-        require(competitorsOut % numTeamsPerGroup == 0)
     }
 
     fun numGroups() = ceilDivide(competition.competitors.size, numTeamsPerGroup)
