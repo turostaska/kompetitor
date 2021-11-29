@@ -7,6 +7,8 @@ import StageGroup from "./singleElements/StageGroup";
 import CompetitorViewDTO from "../DTOs/CompetitorViewDTO";
 import CompetitionDTO from "../DTOs/CompetitionDTO";
 import NewCompetitionService from "../services/CompetitionService";
+import StageFreeForAll from "./singleElements/StageFreeForAll";
+import StageLeague from "./singleElements/StageLeague";
 
 class CreateCompetition extends  Component {
     constructor() {
@@ -27,7 +29,7 @@ class CreateCompetition extends  Component {
     }
 
     onCompetitorLimitChange = e => {
-        this.setState({competitorLimit: e.target.value});
+        this.setState({competitorLimit: Number(e.target.value)});
     }
     onDateChange = e => {
         this.setState({startDate: e.target.value})
@@ -100,6 +102,14 @@ class CreateCompetition extends  Component {
                 case "GROUP":
                     return(
                         <StageGroup add={this.state.addStage} />
+                    );
+                case "FREE_FOR_ALL":
+                    return(
+                        <StageFreeForAll add={this.state.addStage} />
+                    );
+                case "LEAGUE":
+                    return(
+                        <StageLeague add={this.state.addStage} />
                     );
             }
 

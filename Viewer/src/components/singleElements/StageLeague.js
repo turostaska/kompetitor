@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 import StageViewDTO from "../../DTOs/StageViewDTO";
 
-class StageGroup extends Component {
+class StageLeague extends Component {
     constructor(props) {
         super();
         this.state={
             competitorsIn: 0,
             competitorsOut: 0,
             numOfLegs: 0,
-            numCompetitorPerGroup: 0,
             pointsForWin: 0 ,
             pointsForTie: 0 ,
             pointsForLoss: 0
@@ -16,10 +15,9 @@ class StageGroup extends Component {
     }
 
     onCreateStage = () => {
-        if(this.state.competitorsIn > 1 && this.state.competitorsOut >0 && this.state.numOfLegs >0 && this.state.numCompetitorPerGroup > 0 &&
-                this.state.pointsForWin > 0) {
-            let stage = new StageViewDTO("GROUP", this.state.competitorsIn, this.state.competitorsOut, "", this.state.numOfLegs,
-                this.state.numCompetitorPerGroup, this.state.pointsForWin, this.state.pointsForTie, this.state.pointsForLoss);
+        if(this.state.competitorsIn > 1 && this.state.competitorsOut >0 && this.state.numOfLegs >0 && this.state.pointsForWin > 0) {
+            let stage = new StageViewDTO("LEAGUE", this.state.competitorsIn, this.state.competitorsOut, "", this.state.numOfLegs,
+                "", this.state.pointsForWin, this.state.pointsForTie, this.state.pointsForLoss);
             this.props.add(stage);
         }
     }
@@ -32,9 +30,6 @@ class StageGroup extends Component {
     }
     onNumOfLegsChange = e => {
         this.setState({numOfLegs: e.target.value})
-    }
-    onCompetitorPerGroupChange = e => {
-        this.setState({numCompetitorPerGroup: e.target.value})
     }
     onPointsForWinChange = e => {
         this.setState({pointsForWin: e.target.value})
@@ -58,9 +53,6 @@ class StageGroup extends Component {
                 <label id='num_legs'>Number of legs: </label>
                 <input type='number' id="numLegs" min="2" value={this.state.numOfLegs} onChange={this.onNumOfLegsChange}/>
                 <br/>
-                <label id='competitors_per_group'>Competitors per group: </label>
-                <input type='number' id="numLegs" min="2" value={this.state.numCompetitorPerGroup} onChange={this.onCompetitorPerGroupChange}/>
-                <br/>
                 <label id='points_for_win'>Points to win: </label>
                 <input type='number' id="numLegs" min="2" value={this.state.pointsForWin} onChange={this.onPointsForWinChange}/>
                 <br/>
@@ -77,4 +69,4 @@ class StageGroup extends Component {
 
 
 }
-export default StageGroup
+export default StageLeague
