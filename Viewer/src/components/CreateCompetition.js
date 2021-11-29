@@ -187,7 +187,7 @@ class CreateCompetition extends  Component {
                         {this.state.referees.length === 0 ? <option>"No referees"</option> : singleRefereeDisplay}
                     </select>
                     <br/>
-                    <button onClick={this.onCreateCompetition} >Create Competition </button>
+                    <button disabled={!this.creatable()} onClick={this.onCreateCompetition} >Create Competition </button>
                 </div>
             </div>
         )
