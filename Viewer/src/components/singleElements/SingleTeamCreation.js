@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 
 class SingleTeamCreation extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     render(){
         return(
             <div>Team Creation</div>
+            
         );
     }
 }
