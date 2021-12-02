@@ -1,15 +1,11 @@
 package com.esport.kompetitor.controller
 
-import com.esport.kompetitor.persistence.dto.competition.AddRefereeRequestDto
-import com.esport.kompetitor.persistence.dto.competition.CompetitionViewDto
-import com.esport.kompetitor.persistence.dto.competition.StageResultViewDto
-import com.esport.kompetitor.persistence.dto.competition.StageViewDto
+import com.esport.kompetitor.persistence.dto.competition.*
 import com.esport.kompetitor.persistence.service.CompetitionFailureException
 import com.esport.kompetitor.persistence.service.CompetitionService
 import com.esport.kompetitor.security.JwtTokenService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.commons.CommonsMultipartFile
 import javax.servlet.http.HttpServletRequest
 
 @RestController
@@ -112,14 +108,14 @@ class CompetitionController(
 
     @PostMapping("{competitionId}/css")
     fun uploadCss(
-        @RequestParam cssFile: CommonsMultipartFile,
+        @RequestBody cssFile: CssUploadDto,
         @PathVariable competitionId: Long,
         request: HttpServletRequest,
     ) : ResponseEntity<String> = try {
         competitionService.uploadCss(
             competitionId = competitionId,
             adminId = jwtTokenService.getUserId(request),
-            cssFile = cssFile.bytes
+            cssFile = cssFile.fileBase64
         ).let { ResponseEntity.ok(it.decodeToString()) }
     } catch (e: Exception) {
         when(e) {

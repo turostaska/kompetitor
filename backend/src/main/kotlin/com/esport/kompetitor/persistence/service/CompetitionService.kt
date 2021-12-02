@@ -6,6 +6,7 @@ import com.esport.kompetitor.persistence.entity.Competition.Companion.Type.TEAM
 import com.esport.kompetitor.persistence.repository.CompetitionRepository
 import com.esport.kompetitor.persistence.repository.MatchRepository
 import com.esport.kompetitor.persistence.repository.UserRepository
+import org.apache.tomcat.util.codec.binary.Base64
 import org.springframework.stereotype.Component
 
 class CompetitionFailureException(
@@ -138,12 +139,12 @@ class CompetitionService(
         return competition.stages.filter { it.matches.isNotEmpty() }.map { StageResultViewDto.fromStage(it) }.toList()
     }
 
-    fun uploadCss(competitionId: Long, adminId: Long, cssFile: ByteArray): ByteArray {
+    fun uploadCss(competitionId: Long, adminId: Long, cssFile: String): ByteArray {
         val admin = userById(adminId)
 
         val competition = competitionById(competitionId).also {
             require(it.admin == admin)
-            it.cssFile = cssFile
+            it.cssFile = Base64.decodeBase64(cssFile)
         }
 
         return competitionRepository.save(competition).cssFile

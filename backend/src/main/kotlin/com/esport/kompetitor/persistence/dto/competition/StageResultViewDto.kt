@@ -25,21 +25,27 @@ data class StageResultViewDto(
             }
         )
 
-        private fun fromPlayOff(stage: PlayOffStage) = StageResultViewDto(
-            id = stage.id,
-            type = Type.FREE_FOR_ALL,
-            resultPerGroups = stage.groups.map { GroupResultViewDto.fromGroup(it) }
-        )
+        private fun fromPlayOff(stage: PlayOffStage): StageResultViewDto {
+            stage.pointsForEachGroup()
+            return StageResultViewDto(
+                id = stage.id,
+                type = Type.PLAY_OFF,
+                resultPerGroups = stage.groups.map { GroupResultViewDto.fromGroup(it) }
+            )
+        }
 
-        private fun fromGroupStage(stage: GroupStage) = StageResultViewDto(
-            id = stage.id,
-            type = Type.FREE_FOR_ALL,
-            resultPerGroups = stage.groups.map { GroupResultViewDto.fromGroup(it) }
-        )
+        private fun fromGroupStage(stage: GroupStage): StageResultViewDto {
+            stage.pointsForEachGroup()
+            return StageResultViewDto(
+                id = stage.id,
+                type = Type.GROUP,
+                resultPerGroups = stage.groups.map { GroupResultViewDto.fromGroup(it) }
+            )
+        }
 
         private fun fromLeague(stage: LeagueStage) = StageResultViewDto(
             id = stage.id,
-            type = Type.FREE_FOR_ALL,
+            type = Type.LEAGUE,
             resultPerGroups = stage.pointsForEachGroup().map { map ->
                 GroupResultViewDto(map.mapKeys { CompetitorViewDto.fromCompetitor(it.key) })
             }

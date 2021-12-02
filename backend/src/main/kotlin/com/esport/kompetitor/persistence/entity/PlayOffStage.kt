@@ -2,9 +2,7 @@ package com.esport.kompetitor.persistence.entity
 
 import com.esport.kompetitor.util.cartesianProductWithSelf
 import com.esport.kompetitor.util.ceilDivide
-import javax.persistence.CascadeType
 import javax.persistence.Entity
-import javax.persistence.OneToMany
 
 @Entity
 class PlayOffStage(
@@ -32,7 +30,6 @@ class PlayOffStage(
             groups[i % numGroup] += competitor
         }
 
-    //    this.groups = groups.map { Group(it) }
         this.groups.clear()
         this.groups.addAll(groups.map { Group(it, this) })
 
@@ -74,6 +71,9 @@ class PlayOffStage(
                     }
                 }
             }
+            group.scores.clear()
+            group.scores.putAll(pointsInGroup)
+
             pointsForEachGroup += pointsInGroup
         }
         return pointsForEachGroup

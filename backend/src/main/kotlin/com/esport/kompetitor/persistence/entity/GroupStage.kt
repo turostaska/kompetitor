@@ -3,9 +3,7 @@ package com.esport.kompetitor.persistence.entity
 import com.esport.kompetitor.util.cartesianProductWithSelf
 import com.esport.kompetitor.util.ceilDivide
 import org.hibernate.validator.constraints.Range
-import javax.persistence.CascadeType
 import javax.persistence.Entity
-import javax.persistence.OneToMany
 
 @Entity
 class GroupStage (
@@ -29,6 +27,7 @@ class GroupStage (
 ) {
     init {
         require(numCompetitorsIn > numCompetitorsOut)
+        require(competitorsOut % numTeamsPerGroup == 0)
     }
 
     fun numGroups() = ceilDivide(competition.competitors.size, numTeamsPerGroup)
@@ -83,6 +82,9 @@ class GroupStage (
                     }
                 }
             }
+            group.scores.clear()
+            group.scores.putAll(pointsInGroup)
+
             pointsForEachGroup += pointsInGroup
         }
         return pointsForEachGroup
