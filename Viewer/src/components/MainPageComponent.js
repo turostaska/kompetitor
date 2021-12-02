@@ -13,7 +13,7 @@ class MainPageComponent extends Component {
         this.state = {
             token: this.props.userToken,
             screen: MainPageEnum.CompetitionList,
-            switchFunc: () => {}
+            switchFunc: () => {},
         };
     }
     toCreateCompetition =  () => {
@@ -42,7 +42,7 @@ class MainPageComponent extends Component {
             case MainPageEnum.Joining:
                 return (<JoinScreen token ={this.state.token}/>);
             case MainPageEnum.InviteScreen:
-                return (<InviteScreen token ={this.state.token}/>);
+                return (<InviteScreen username={this.props.username} token ={this.state.token}/>);
 
         }
     }

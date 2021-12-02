@@ -18,7 +18,7 @@ class MyTeamComponent extends Component {
             }
         return(
             <div>
-                <h2>Team</h2>
+                <h2>Your Team</h2>
                 <h4>Name:</h4>
                 <p>{this.props.team.name}</p>
                 <h4>Member list: </h4>
