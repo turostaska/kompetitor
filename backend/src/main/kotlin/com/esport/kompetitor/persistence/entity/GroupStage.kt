@@ -27,7 +27,6 @@ class GroupStage (
 ) {
     init {
         require(numCompetitorsIn > numCompetitorsOut)
-        require(competitorsOut % numTeamsPerGroup == 0)
     }
 
     fun numGroups() = ceilDivide(competition.competitors.size, numTeamsPerGroup)
@@ -40,7 +39,6 @@ class GroupStage (
             groups[i % numGroups] += competitor
         }
 
-        //this.groups = groups.map { Group(it) }
         this.groups.clear()
         this.groups.addAll(groups.map { Group(it, this) })
 

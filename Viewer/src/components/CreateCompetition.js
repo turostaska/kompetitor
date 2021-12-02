@@ -95,7 +95,7 @@ class CreateCompetition extends  Component {
                         await NewCompetitionService.postNewReferee(this.props.token, id, this.state.referees[i].username);
                     }
                     if(!(this.state.file === {})){
-                        alert(this.state.file.name)
+
 
                         const base64File = await this.toBase64(this.state.file).catch(e => Error(e));
                         if(result instanceof Error) {

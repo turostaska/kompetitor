@@ -129,7 +129,7 @@ class CompetitionController(
         @PathVariable competitionId: Long,
         request: HttpServletRequest,
     ): ResponseEntity<String> = try {
-        competitionService.getCss(competitionId).decodeToString().let { ResponseEntity.ok(it) }
+        competitionService.getCss(competitionId).let { ResponseEntity.ok(it) }
     } catch (e: Exception) {
         when(e) {
             is CompetitionFailureException, is IllegalArgumentException -> ResponseEntity.badRequest().build()
