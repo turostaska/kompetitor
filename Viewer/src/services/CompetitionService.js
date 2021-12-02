@@ -6,7 +6,7 @@ const COMPETITION_CREATE_REST_API_URL = "http://localhost:8080/api/competition/c
 const COMPETITION_ADD_REFEREE_REST_API_URL = "http://localhost:8080/api/competition/add_referee";
 const COMPETITION_JOIN_REST_API_URL1 = "http://localhost:8080/api/competition/";
 const COMPETITION_JOIN_REST_API_URL2 = "/join";
-
+const COMPETITION_CSS_REST_API_URL2 = "/css";
 
 class CompetitionService {
     getAllCompetitions = (token) => {
@@ -22,6 +22,15 @@ class CompetitionService {
                 refereeName: referee,
                 competitionId: Number(competitionId)
             },
+            { headers: { Authorization: 'Bearer '+token}}).catch(error => {
+            alert(error.message);
+            console.error('There was an error!', error);
+        });
+    }
+
+    postCss = (token, competitionId, css) => {
+        return axios.post(COMPETITION_JOIN_REST_API_URL1 + competitionId + COMPETITION_CSS_REST_API_URL2, {
+            fileBase64: css},
             { headers: { Authorization: 'Bearer '+token}}).catch(error => {
             alert(error.message);
             console.error('There was an error!', error);

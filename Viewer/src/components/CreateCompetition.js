@@ -24,9 +24,11 @@ class CreateCompetition extends  Component {
             addStage: this.addStage,
             currentReferee: "",
             stageType: "PLAY_OFF",
-            competitionAdded: false
+            competitionAdded: false,
+            file: {}
         }
     }
+
 
     onCompetitorLimitChange = e => {
         this.setState({competitorLimit: Number(e.target.value)});
@@ -52,6 +54,9 @@ class CreateCompetition extends  Component {
     typeFreeForAll = () => {
         this.setState({stageType: "FREE_FOR_ALL"})
     }
+    onFileChange = async(e) => {
+        await this.setState({file: e.target.files[0]})
+    }
     typeLeague = () => {
         this.setState({stageType: "LEAGUE"})
     }
@@ -61,7 +66,7 @@ class CreateCompetition extends  Component {
 
     creatable = () => {
         return this.state.stageAdded === true && this.state.referees.length > 0 &&
-            (this.state.type === "INDIVIDUAL" || this.state.type === "GROUP") &&
+            (this.state.type === "INDIVIDUAL" || this.state.type === "TEAM") &&
             this.state.competitorLimit >= 2;
     }
     stageAdding = async() => {
@@ -70,7 +75,16 @@ class CreateCompetition extends  Component {
     addStage = async(stage) => {
         await this.setState({stages: [...this.state.stages, stage], stageInProgress: false, stageAdded:true});
 }
+
+    toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
     onCreateCompetition = async() =>{
+
         if(this.creatable()){
             let date= this.state.startDate+":00.00Z";
             let competition = new CompetitionDTO(this.state.competitorLimit, date, this.state.type, this.state.stages);
@@ -79,6 +93,20 @@ class CreateCompetition extends  Component {
                     let id = result.data.id;
                     for(let i=0; i<this.state.referees.length; i++){
                         await NewCompetitionService.postNewReferee(this.props.token, id, this.state.referees[i].username);
+                    }
+                    if(!(this.state.file === {})){
+                        alert(this.state.file.name)
+
+                        const base64File = await this.toBase64(this.state.file).catch(e => Error(e));
+                        if(result instanceof Error) {
+                            console.log('Error: ', result.message);
+                            alert("base64 error")
+                            return;
+                        }
+                        NewCompetitionService.postCss(this.props.token, id, base64File).then(result => {
+                            if(!(result.status === 200))
+                                alert("problem with upload");
+                        })
                     }
                     await this.setState({competitorLimit: 0, startDate: Date.now(), type: "",
                         stages: [], stageAdded: false, stageInProgress: false, referees: [],
@@ -181,6 +209,10 @@ class CreateCompetition extends  Component {
                     <label>Add referees by their username: </label>
                     <input type="text" id="username" value={this.state.currentReferee} onChange={this.onRefereeChange}/>
                     <button onClick={this.onAddReferee}>Add Referee</button>
+                    </div>
+                    <div>
+                        <label>Add a CSS file, that describes how the view of the competition should look</label>
+                        <input type="file" id="myfile" name="myfile" onChange={this.onFileChange}/>
                     </div>
                     <select value="Referees">
                         <option>Referees</option>

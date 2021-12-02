@@ -110,7 +110,6 @@ class InviteScreen extends  Component {
                     <tr>
                         <td> </td>
                         <td>Team</td>
-                        <td>Inviter</td>
                         <td> </td>
                     </tr>
                     </thead>

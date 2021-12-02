@@ -13,9 +13,8 @@ class SingleInvite extends Component {
     render (){
         return(
             <tr>
-                <td>{this.props.invite.id}</td>
+                <td>Received an invite to</td>
                 <td>{this.props.invite.team.name}</td>
-                <td>{this.props.invite.user.username}</td>
                 <td> <button disabled={this.props.joinedTeam} onClick={this.onAccept}>ACCEPT</button></td>
             </tr>
         );

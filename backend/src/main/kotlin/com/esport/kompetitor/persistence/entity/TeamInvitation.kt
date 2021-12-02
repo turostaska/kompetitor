@@ -4,13 +4,13 @@ import javax.persistence.*
 
 @Entity
 class TeamInvitation(
-    @ManyToOne
-    @JoinColumn(nullable=false)
-    val user: User,
+        @ManyToOne
+        @JoinColumn(nullable=false)
+        val user: User,
 
-    @OneToOne
-    @MapsId
-    val team: Team,
+        @ManyToOne
+        @JoinColumn(nullable=false)
+        val team: Team,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
