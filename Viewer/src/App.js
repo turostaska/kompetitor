@@ -11,16 +11,17 @@ class App extends Component {
         super();
         this.state = {
             logged_in: false,
-            token: ""
+            token: "",
+            username: ""
         }
     }
-   LoginSuccess = (token) => {
-        this.setState({logged_in: true, token: token});
+   LoginSuccess = (token, name) => {
+        this.setState({logged_in: true, token: token, username: name});
    }
     render() {
         return (
             <div className="App">
-                {this.state.logged_in === false? <UserLoginComponent LoginSuccess={this.LoginSuccess}/> : <MainPageComponent userToken={this.state.token} />}
+                {this.state.logged_in === false? <UserLoginComponent LoginSuccess={this.LoginSuccess}/> : <MainPageComponent username={this.state.username} userToken={this.state.token} />}
             </div>
         );
     }

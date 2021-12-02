@@ -38,7 +38,7 @@ class MainPageComponent extends Component {
             case MainPageEnum.CreateCompetition:
                 return (<CreateCompetition token ={this.state.token}/>);
             case MainPageEnum.CreateTeam:
-                return (<CreateTeams token ={this.state.token}/>);
+                return (<CreateTeams username={this.props.username} token ={this.state.token}/>);
             case MainPageEnum.Joining:
                 return (<JoinScreen token ={this.state.token}/>);
             case MainPageEnum.InviteScreen:

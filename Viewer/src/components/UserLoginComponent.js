@@ -18,7 +18,7 @@ class UserLoginComponent extends Component{
     }
 
     SuccessfulLogin = ()=>{
-        this.props.LoginSuccess(this.state.token);
+        this.props.LoginSuccess(this.state.token, this.state.currentUser.username);
     }
 
     componentButton = () => {
