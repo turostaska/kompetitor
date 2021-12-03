@@ -7,8 +7,6 @@ import com.esport.kompetitor.persistence.repository.CompetitionRepository
 import com.esport.kompetitor.persistence.repository.MatchRepository
 import com.esport.kompetitor.persistence.repository.UserRepository
 import org.springframework.stereotype.Component
-import java.util.*
-import java.util.Base64.getDecoder
 
 class CompetitionFailureException(
     message: String,
@@ -151,9 +149,7 @@ class CompetitionService(
         return competitionRepository.save(competition).cssFile
     }
 
-    fun getCss(competitionId: Long): String = competitionById(competitionId).cssFile.let {
-        Base64.getDecoder().decode(it.decodeToString().split(",")[1].toByteArray()).decodeToString()
-    }
+    fun getCss(competitionId: Long): String = competitionById(competitionId).cssFile.decodeToString().split(",").last()
 
     fun competitionsRefereedBy(userId: Long) = competitionRepository.findRefereedBy(userId)
 }
