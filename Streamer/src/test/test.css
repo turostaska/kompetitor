@@ -1,0 +1,15 @@
+.playerName {
+    backgroundColor: palegreen;
+    color: darkgreen;
+}
+
+.score {
+    backgroundColor: indianred;
+    color: black;
+}
+
+.head {
+    fontSize: '3em';
+    color: white;
+    backgroundColor: black;
+}
