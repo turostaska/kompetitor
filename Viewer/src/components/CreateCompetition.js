@@ -25,7 +25,8 @@ class CreateCompetition extends  Component {
             currentReferee: "",
             stageType: "PLAY_OFF",
             competitionAdded: false,
-            file: {}
+            file: {},
+            fileAdded: false
         }
     }
 
@@ -55,7 +56,7 @@ class CreateCompetition extends  Component {
         this.setState({stageType: "FREE_FOR_ALL"})
     }
     onFileChange = async(e) => {
-        await this.setState({file: e.target.files[0]})
+        await this.setState({file: e.target.files[0], fileAdded: true})
     }
     typeLeague = () => {
         this.setState({stageType: "LEAGUE"})
@@ -103,14 +104,15 @@ class CreateCompetition extends  Component {
                             alert("base64 error")
                             return;
                         }
-                        NewCompetitionService.postCss(this.props.token, id, base64File).then(result => {
-                            if(!(result.status === 200))
-                                alert("problem with upload");
-                        })
+                        if(this.state.fileAdded)
+                            NewCompetitionService.postCss(this.props.token, id, base64File).then(result => {
+                                if(!(result.status === 200))
+                                    alert("problem with upload");
+                            })
                     }
                     await this.setState({competitorLimit: 0, startDate: Date.now(), type: "",
                         stages: [], stageAdded: false, stageInProgress: false, referees: [],
-                        addStage: this.addStage, currentReferee: "", stageType: "PLAY_OFF", competitionAdded: true})
+                        addStage: this.addStage, currentReferee: "", stageType: "PLAY_OFF", competitionAdded: true, file: {}, fileAdded: false})
                 }
                 else
                     alert("not successful creation");
